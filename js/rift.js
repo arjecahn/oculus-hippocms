@@ -26,17 +26,31 @@ var Nexus4 = {
   Distortion: [1, .22, .24, 0]
 };
 
+//var HMDInfo_DevKit2 = {
+//  HScreenSize: .14976,
+//  VScreenSize: .0935,
+//  VScreenCenter: .0935 / 2,
+//  EyeToScreenDistance: .051,
+//  LensSeperationDistance: .067,
+//  InterpupillaryDistance: .0675,
+//  HResolution: 1920,
+//  VResolution: 1080,
+//  Distortion: [1, .22, .24, 0]
+//};
+
 var HMDInfo_DevKit2 = {
-  HScreenSize: .14976,
-  VScreenSize: .0935,
+  HScreenSize: 0.12576,
+  VScreenSize: 0.07074,
   VScreenCenter: .0935 / 2,
-  EyeToScreenDistance: .051,
-  LensSeperationDistance: .067,
-  InterpupillaryDistance: .0675,
+  EyeToScreenDistance: .041,
+  LensSeperationDistance: .0635,
+  InterpupillaryDistance: .0635,
   HResolution: 1920,
   VResolution: 1080,
   Distortion: [1, .22, .24, 0]
 };
+
+
 
 function RiftCamera (hmd, pixelScale, flipEyes) {
 this.info = hmd;

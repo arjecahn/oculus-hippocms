@@ -14,7 +14,9 @@
 	</head>
 	<body>
 	    <script src="js/three.min.js"></script>
-        <script src="js/rift.js"></script>
+        <!--<script src="js/rift.js"></script>-->
+        <script src="OculusRiftEffectDK2.js"></script>
+        <script src="js/loaders/SceneLoader.js"></script>
 
         <script>
 			var scene = new THREE.Scene();
@@ -107,13 +109,21 @@
 
             scene.add( root );
 
-            var devkit = HMDInfo_DevKit2;
+            //var devkit = HMDInfo_DevKit2;
 
-            var hmd = new RiftCamera(devkit, 0.9, false);
-            hmd.position.y = 0;
-            hmd.position.z = 9;
-            hmd.setRendererSize(renderer);
-            hmd.setupHardware();
+            var camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
+            //camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
+
+            camera.position.y = 0;
+            camera.position.z = 9;
+            //camera.setRendererSize(renderer);
+            //hmd.setupHardware();
+
+            // Here is the effect for the Oculus Rift
+            // worldScale 100 means that 100 Units == 1m
+            effect = new THREE.OculusRiftEffect( renderer, {worldScale: 100} );
+            effect.setSize( window.innerWidth, window.innerHeight );
+
 
 			var render = function () {
 				requestAnimationFrame(render);
@@ -128,10 +138,10 @@
                 var ry = Math.sin( time * 0.3 ) * 0.1;
                 var rz = Math.sin( time * 0.2 ) * 0.1;
 
-                hmd.position.x += ( hmd.position.x ) * .05;
-                hmd.position.y += ( hmd.position.y ) * .05;
+                camera.position.x += ( camera.position.x ) * .05;
+                camera.position.y += ( camera.position.y ) * .05;
 
-                hmd.lookAt( scene.position );
+                camera.lookAt( scene.position );
 
                 root.traverse( function ( object ) {
 
@@ -141,7 +151,7 @@
 
                 } );
 
-                hmd.render(renderer, scene);
+                effect.render( scene, camera );
 
 			};
 
