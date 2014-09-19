@@ -13,18 +13,45 @@ THREE.OculusRiftEffect = function ( renderer, options ) {
   var worldFactor = (options && options.worldFactor) ? options.worldFactor: 1.0;
 
   // Specific HMD parameters
+//  var HMD = (options && options.HMD) ? options.HMD: {
+//    // Parameters from the Oculus Rift DK2
+//    hResolution: 1920, // <--
+//    vResolution: 1080, // <--
+//    hScreenSize: 0.12576, // <--
+//    vScreenSize: 0.07074, // <--
+//    interpupillaryDistance: 0.0635, // <--
+//    lensSeparationDistance: 0.0635, // <--
+//    eyeToScreenDistance: 0.041,
+//    distortionK : [1.0, 0.22, 0.24, 0.0],
+//    chromaAbParameter: [ 0.996, -0.004, 1.014, 0.0]
+//  };
+
+  // Specific HMD parameters
   var HMD = (options && options.HMD) ? options.HMD: {
     // Parameters from the Oculus Rift DK2
     hResolution: 1920, // <--
     vResolution: 1080, // <--
     hScreenSize: 0.12576, // <--
     vScreenSize: 0.07074, // <--
-    interpupillaryDistance: 0.0635, // <--
-    lensSeparationDistance: 0.0635, // <--
-    eyeToScreenDistance: 0.041,
+    interpupillaryDistance: 0.064, // <--
+    lensSeparationDistance: 0.064, // <--
+    eyeToScreenDistance: 0.051,
     distortionK : [1.0, 0.22, 0.24, 0.0],
     chromaAbParameter: [ 0.996, -0.004, 1.014, 0.0]
   };
+
+//var HMDInfo_DevKit2 = {
+//  HScreenSize: .14976,
+//  VScreenSize: .0935,
+//  VScreenCenter: .0935 / 2,
+//  EyeToScreenDistance: .051,
+//  LensSeperationDistance: .067,
+//  InterpupillaryDistance: .0675,
+//  HResolution: 1920,
+//  VResolution: 1080,
+//  Distortion: [1, .22, .24, 0]
+//};
+
 
   // Perspective camera
   var pCamera = new THREE.PerspectiveCamera();
@@ -168,6 +195,7 @@ THREE.OculusRiftEffect = function ( renderer, options ) {
       var state = this.vrPosDev.getState();
       var qrot = new THREE.Quaternion();
       qrot.set(state.orientation.x, state.orientation.y, state.orientation.z, state.orientation.w);
+      console.log("x " + state.orientation.x)  ;
       camera.setRotationFromQuaternion(qrot);
     }
 

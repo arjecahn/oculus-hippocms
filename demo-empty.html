@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>3D</title>
+    <style>
+        canvas { width: 100%; height: 100% }
+        body {
+            font-family: sans-serif;
+            background-color: #00f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+<body>
+<script src="js/three.min.js"></script>
+<script src="OculusRiftEffectDK2.js"></script>
+
+<script>
+
+    var effect = new THREE.OculusRiftEffect( renderer, {worldScale: 1} );
+    effect.setSize( window.innerWidth, window.innerHeight );
+    // See if we can find a device with head tracking
+    effect.setupHardware();
+
+    var render = function () {
+        effect.render( scene, camera );
+    };
+
+    render();
+</script>
+</body>
+</html>
