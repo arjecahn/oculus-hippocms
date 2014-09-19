@@ -71,7 +71,7 @@ this.changeRenderMode = function (newMode) {
 
 THREE.Camera.call(this);
 // define shaders
-var VERTEX_SHADER = [ 
+var VERTEX_SHADER = [
 "varying vec2 vUv;",
 "attribute vec2 aberration;",
 "varying vec2 vAberration;",

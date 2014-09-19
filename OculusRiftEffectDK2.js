@@ -162,6 +162,16 @@ THREE.OculusRiftEffect = function ( renderer, options ) {
     renderer.clear();
     renderer.setClearColor(cc);
 
+
+    // Do we have position tracking?
+    if (!!this.vrPosDev) {
+      var state = this.vrPosDev.getState();
+      var qrot = new THREE.Quaternion();
+      qrot.set(state.orientation.x, state.orientation.y, state.orientation.z, state.orientation.w);
+      camera.setRotationFromQuaternion(qrot);
+    }
+
+
     // camera parameters
     if (camera.matrixAutoUpdate) camera.updateMatrix();
 
@@ -205,5 +215,44 @@ THREE.OculusRiftEffect = function ( renderer, options ) {
       renderTarget.dispose();
     }
   };
+
+  this.setupHardware = function() {
+    var hmd = this;
+    function configureDevices(devices) {
+      hmd.vrDevices = devices;
+      console.log("Found " + devices.length + " VR devices");
+      for (var i=0; i<devices.length; ++i) {
+        if (devices[i] instanceof HMDVRDevice) {
+          hmd.vrHMD = devices[i];
+          break;
+        }
+      }
+      if (!hmd.vrHMD) {
+        console.log("No VR devices instanceof HMDVRDevice");
+        return;
+      }
+
+      for (var i=0; i<devices.length; ++i) {
+        if (devices[i] instanceof PositionSensorVRDevice &&
+          devices[i].hardwareUnitId == hmd.vrHMD.hardwareUnitId) {
+          hmd.vrPosDev = devices[i];
+          break;
+        }
+      }
+      if (!hmd.vrPosDev) {
+        console.log("No VR devices matching position sensor");
+        return;
+      }
+
+      console.log("VR HMD enabled: " + hmd.vrHMD.hardwareUnitId);
+    };
+    if (navigator.mozGetVRDevices) {
+      navigator.mozGetVRDevices(configureDevices);
+    } else if (navigator.getVRDevices) {
+      navigator.getVRDevices().then(configureDevices);
+    } else {
+      console.log("No navigator.mozGetVRDevices. VR disabled");
+    }
+  }
 
 };

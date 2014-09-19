@@ -14,9 +14,7 @@
 	</head>
 	<body>
 	    <script src="js/three.min.js"></script>
-        <!--<script src="js/rift.js"></script>-->
         <script src="OculusRiftEffectDK2.js"></script>
-        <script src="js/loaders/SceneLoader.js"></script>
 
         <script>
 			var scene = new THREE.Scene();
@@ -24,9 +22,8 @@
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			document.body.appendChild(renderer.domElement);
 
-			//var geometry = new THREE.BoxGeometry(1,1,1);
-			//var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-			//var cube = new THREE.Mesh(geometry, material);
+
+            // First, we build our scene
 
             var geometry = new THREE.BoxGeometry( 100, 100, 100 );
             var material = new THREE.MeshNormalMaterial();
@@ -107,32 +104,35 @@
             }
 
 
+            // Scene is done
+
             scene.add( root );
 
-            //var devkit = HMDInfo_DevKit2;
+            // Now setup the camera
 
             var camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
-            //camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
 
             camera.position.y = 0;
             camera.position.z = 9;
-            //camera.setRendererSize(renderer);
-            //hmd.setupHardware();
 
             // Here is the effect for the Oculus Rift
             // worldScale 100 means that 100 Units == 1m
-            effect = new THREE.OculusRiftEffect( renderer, {worldScale: 100} );
+
+            // AC: if worldScale is too big, the 3D effect is less because most of the world is very far away
+
+            effect = new THREE.OculusRiftEffect( renderer, {worldScale: 1} );
             effect.setSize( window.innerWidth, window.innerHeight );
 
+            // See if we can find a device with head tracking
+            effect.setupHardware();
 
 			var render = function () {
-				requestAnimationFrame(render);
 
-				//cube.rotation.x += 0.1;
-				//cube.rotation.y += 0.1;
+                // Animation happens here
 
+                requestAnimationFrame(render);
 
-                var time = Date.now() * 0.0005;
+                var time = Date.now() * 0.001;
 
                 var rx = Math.sin( time * 0.7 ) * 0.2;
                 var ry = Math.sin( time * 0.3 ) * 0.1;
